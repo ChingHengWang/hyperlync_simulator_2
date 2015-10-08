@@ -12,11 +12,11 @@
 #include <sensor_msgs/LaserScan.h>
 #include <geometry_msgs/Vector3.h>
 #include <tf/transform_broadcaster.h>
+#include <unistd.h>
 
 
 double distance_scan;
 int count = 0;
-
 
 void laserCallback(const sensor_msgs::LaserScan& laserscan){
 	distance_scan = laserscan.ranges[1];	
@@ -69,30 +69,39 @@ int main(int argc, char** argv){
         sleep(5); // to make sure the laser joint move to home position
 
 
+        angle = -1.57;
   	ros::Rate r(50.0);
 
 //  	std_msgs::Float64 laser_angle;
   	while(n.ok()){
-		current_time = ros::Time::now();
-		laser_angle.data = angle;
-		if (laser_angle.data > 1.57) flag = 1;
-		else if (laser_angle.data < -1.57) flag = 0;
-		if (flag == 0){
-			angle  = angle + 6.28/720;
-			count++;
-		}
-		else if (flag == 1){
-			angle  = angle - 6.28/720;
-			count--;
-		}
-		//ROS_INFO("COUNT %d",count);
-		//ROS_INFO("ANGLE %f",angle);
-		laser_angle_pub.publish(laser_angle);
+	//	ROS_INFO("COUNT %d",count);
+	//	ROS_INFO("ANGLE %f",angle);
+
+                current_time = ros::Time::now();
+                laser_angle.data = angle;
+		laser_angle_pub.publish(laser_angle);   // set laser joint position
+                ros::spinOnce();
+
 		scan.header.stamp = current_time;
 		scan.ranges[count] = distance_scan;		
-		if (angle > 1.57) laser_pub.publish(scan);
+
+		if (count==359) {
+                    laser_pub.publish(scan);  // publish Laserscan message
+                }
+
+                if (count==359) flag = 1;
+                else if (count==0) flag = 0;
+                if (flag == 0){
+                        angle  = angle + 0.008722222;
+                        count++;
+                }
+                else if (flag == 1){
+                        angle  = angle - 0.008722222;
+                        count--;
+                }
+
+
 		r.sleep();
-		ros::spinOnce();
   	}
 }
 

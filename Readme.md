@@ -1,9 +1,24 @@
 #Hyperlynch Mobile Robot Simulator 2.0
-*function : nav using single light and rotate , so it can do  sensing and moving dividly
 
-#Step
-	$ ./hyperlync_simulator 
-	$ roslaunch hyperlync_robot robot_mapping.launch
-	$ roslaunch hyperlync_robot move_base.launch 
-	$ rosrun hyperlync_robot rotating_laser
+* key point : two measurement point sensor with prepared static map can achieve the basic localization in condition of no apparent odometry error such as long distance movement of andbot but no wheel contact the ground(no odometry information)
+* key condition : no large movement of andbot with no contact between wheel and ground
+
+
+#Situation
+* simulation run gazebo and andbot and load the static map(my_map2.yaml) by mapserver, and andbot just use Hokuyo sensor like the single beam ,
+
+
+* Gazebo model
+* Hokuyo sensor (Two measurement)
+
+		Run *roslaunch hyperlync_robot hyperlync_simulator.launch* for the single beam
+
+* Static Map - run map server to provide /map topic to move_base node
+* Navigation move_base
+		Run *roslaunch hyperlync_robot move_base.launch*
+* amcl - no need for slam_gmapping (no need to mapping just localization)
+		Run *roslaunch hyperlync_robot robot_mapping.launch*
+
+* Go on Rviz, click on *2D Nav Goal* and point and click on the Rviz map as goal for the robot
+
 

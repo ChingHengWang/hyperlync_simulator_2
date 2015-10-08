@@ -10,7 +10,7 @@
 <launch>
 
   <arg name="scan_topic" default="laser" />
-
+<!--
   <node pkg="gmapping" type="slam_gmapping" name="slam_gmapping" output="screen">
     <param name="base_frame" value="base_footprint"/>
     <param name="odom_frame" value="odom"/>
@@ -18,4 +18,11 @@
 
     <remap from="scan" to="$(arg scan_topic)"/>
   </node>
+-->
+
+ <node pkg="amcl" type="amcl" name="amcl" output="screen" >
+<!--	<remap from="scan" to="laser"/>-->
+</node>
+
+
 </launch>

@@ -11,16 +11,11 @@
 <launch>
 
   <!-- Run the map server  -->
-<!--
-  <node name="map_server" pkg="map_server" type="map_server" args="/home/kkuei/catkin_ws/src/hyperlync_robot/my_map2.yaml"/>
-
--->
-
+  <node name="map_server" pkg="map_server" type="map_server" args="/home/zach/catkin_ws/src/hyperlync_simulator_2/hyperlync_robot/my_map2.yaml"/>
   <!-- Run Amcl -->
 <!--
   <node pkg="amcl" type="amcl" name="amcl" output="screen" />
 -->
-
   <!-- Run Move Base -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
     <rosparam file="$(find hyperlync_robot)/costmap_common_params.yaml" command="load" ns="global_costmap" />
@@ -30,7 +25,5 @@
     <rosparam file="$(find hyperlync_robot)/base_local_planner_params.yaml" command="load" />
     <remap from="/cmd_vel" to="/andbot/cmd_vel"/>
   </node>
-
-
 
 </launch>
